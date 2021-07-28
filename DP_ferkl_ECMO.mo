@@ -45,8 +45,8 @@ package DP_ferkl_ECMO
         parameter Physiolibrary.Types.VolumeFlowRate SWEEP=0 "Air + O2 flow in ECMO[m3/s]";
         parameter Real FiO2=0.8       "Fraction of oxygen in gas";
 
-    Physiolibrary.Fluid.Components.Resistor resistor1(redeclare package Medium =
-          Blood, Resistance=7999343.2449*((5.5*20)/8))
+    Physiolibrary.Fluid.Components.Resistor resistor1(redeclare package Medium
+        = Blood, Resistance=7999343.2449*((5.5*20)/8))
       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,
@@ -67,8 +67,8 @@ package DP_ferkl_ECMO
       ZeroPressureVolume(displayUnit="l") = 0.00295,
       nPorts=8)
       annotation (Placement(transformation(extent={{-266,-172},{-246,-152}})));
-    Physiolibrary.Fluid.Components.Resistor resistor2(redeclare package Medium =
-          Blood, Resistance=7999343.2449*(20/8))                     annotation (
+    Physiolibrary.Fluid.Components.Resistor resistor2(redeclare package Medium
+        = Blood, Resistance=7999343.2449*(20/8))                     annotation (
         Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,
@@ -442,8 +442,8 @@ package DP_ferkl_ECMO
     Physiolibrary.Types.Constants.VolumeFlowRateConst volumeFlowRate3(k(
           displayUnit="l/min") = SWEEP)
       annotation (Placement(transformation(extent={{-140,316},{-148,324}})));
-    Physiolibrary.Fluid.Sources.PressureSource Sweep(redeclare package Medium =
-          Air, use_concentration_start=false)
+    Physiolibrary.Fluid.Sources.PressureSource Sweep(redeclare package Medium
+        = Air, use_concentration_start=false)
       annotation (Placement(transformation(extent={{-26,176},{-46,196}})));
     Physiolibrary.Fluid.Components.ElasticVessel Alveoly(
       redeclare package Medium = Physiolibrary.Media.Air,
@@ -549,6 +549,13 @@ package DP_ferkl_ECMO
           extent={{-10,-10},{10,10}},
           rotation=0,
           origin={-274,102})));
+    Modelica.Blocks.Math.Min min2
+      annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          rotation=270,
+          origin={474,42})));
+    Physiolibrary.Types.Constants.VolumeFlowRateConst volumeFlowRate(k(
+          displayUnit="l/min") = 0.002)
+      annotation (Placement(transformation(extent={{432,-12},{440,-4}})));
   equation
     connect(resistor1.q_in, Arteries.q_in[1]) annotation (Line(
         points={{-150,-164},{-125.9,-164},{-125.9,-156.549}},
@@ -759,8 +766,6 @@ package DP_ferkl_ECMO
     connect(pO2Arteries.partialPressure, scitani.u2) annotation (Line(points={{-66,
             -190},{320,-190}},                                      color={0,0,
             127}));
-    connect(max1.y, division.u1) annotation (Line(points={{480,-23},{484,-23},{
-            484,118},{444,118}}, color={0,0,127}));
     connect(MinuteVolume.solutionFlow, division.u1) annotation (Line(points={{
             -4,689},{82,689},{82,690},{484,690},{484,118},{444,118}}, color={0,
             0,127}));
@@ -998,6 +1003,12 @@ package DP_ferkl_ECMO
         points={{-276,638},{-210.267,638},{-210.267,615.9}},
         color={127,0,0},
         thickness=0.5));
+    connect(volumeFlowRate.y, min2.u2)
+      annotation (Line(points={{441,-8},{468,-8},{468,30}}, color={0,0,127}));
+    connect(max1.y, min2.u1)
+      annotation (Line(points={{480,-23},{480,30}}, color={0,0,127}));
+    connect(min2.y, division.u1) annotation (Line(points={{474,53},{474,80},{
+            484,80},{484,118},{444,118}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-660,
               -460},{660,740}})),
                             Diagram(coordinateSystem(preserveAspectRatio=false,

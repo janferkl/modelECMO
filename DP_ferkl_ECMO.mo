@@ -784,8 +784,9 @@ package DP_ferkl_ECMO
   model ECMOSim_RespRegulation
     extends ECMOSim(DeadSpace(useSolutionFlowInput=true), MinuteVolume(
           useSolutionFlowInput=true));
-    Physiolibrary.Types.Constants.PressureConst pressure(k(displayUnit="kPa")
-         = 4800)
+    parameter Real DVfraction=0.4;
+
+    Physiolibrary.Types.Constants.PressureConst pressure(k(displayUnit="kPa") = 4800)
       annotation (Placement(transformation(extent={{342,-142},{350,-134}})));
     Modelica.Blocks.Math.Add add(k1=-1)
       annotation (Placement(transformation(extent={{376,-154},{396,-134}})));
@@ -799,13 +800,13 @@ package DP_ferkl_ECMO
           origin={506,-34})));
     Modelica.Blocks.Sources.Constant const2(k=0)
       annotation (Placement(transformation(extent={{462,-96},{482,-76}})));
-    Physiolibrary.Types.Constants.VolumeConst volume(k(displayUnit="l") =
-        0.00035) annotation (Placement(transformation(
+    Physiolibrary.Types.Constants.VolumeConst volume(k(displayUnit="l") = 0.00035)
+                 annotation (Placement(transformation(
           extent={{-4,-4},{4,4}},
           rotation=180,
           origin={426,124})));
-    Physiolibrary.Types.Constants.FrequencyConst frequency(k=
-          0.01666666666666667*(50/(2 - 0.35))) annotation (Placement(
+    Physiolibrary.Types.Constants.FrequencyConst frequency(k=0.01666666666666667*(
+          50/(2 - 0.35)))                      annotation (Placement(
           transformation(
           extent={{-4,-4},{4,4}},
           rotation=180,
@@ -832,8 +833,7 @@ package DP_ferkl_ECMO
           extent={{10,-10},{-10,10}},
           rotation=180,
           origin={500,-208})));
-    Physiolibrary.Types.Constants.PressureConst pressure1(k(displayUnit="kPa")
-         = 700)
+    Physiolibrary.Types.Constants.PressureConst pressure1(k(displayUnit="kPa") = 700)
       annotation (Placement(transformation(extent={{382,-212},{390,-204}})));
     Modelica.Blocks.Math.Max max2 annotation (Placement(transformation(
           extent={{10,10},{-10,-10}},
@@ -845,8 +845,8 @@ package DP_ferkl_ECMO
           origin={264,184})));
     Modelica.Blocks.Math.Min min1
       annotation (Placement(transformation(extent={{366,128},{346,148}})));
-    Physiolibrary.Types.Constants.VolumeConst volume1(k(displayUnit="l") =
-        0.00231) annotation (Placement(transformation(
+    Physiolibrary.Types.Constants.VolumeConst volume1(k(displayUnit="l") = 0.00231)
+                 annotation (Placement(transformation(
           extent={{-4,-4},{4,4}},
           rotation=180,
           origin={402,146})));
@@ -885,54 +885,52 @@ package DP_ferkl_ECMO
       annotation (Line(points={{435,-202},{488,-202}}, color={0,0,127}));
     connect(pressure.y,add. u1)
       annotation (Line(points={{351,-138},{374,-138}}, color={0,0,127}));
-    connect(add.y,product5. u2) annotation (Line(points={{397,-144},{506,-144},
-            {506,-128}}, color={0,0,127}));
-    connect(Slope.y,product5. u1) annotation (Line(points={{511,-208},{518,-208},
-            {518,-128}}, color={0,0,127}));
+    connect(add.y,product5. u2) annotation (Line(points={{397,-144},{506,-144},{506,
+            -128}},      color={0,0,127}));
+    connect(Slope.y,product5. u1) annotation (Line(points={{511,-208},{518,-208},{
+            518,-128}},  color={0,0,127}));
     connect(product5.y,max1. u1)
       annotation (Line(points={{512,-105},{512,-46}},  color={0,0,127}));
-    connect(const2.y,max1. u2) annotation (Line(points={{483,-86},{500,-86},{
-            500,-46}}, color={0,0,127}));
+    connect(const2.y,max1. u2) annotation (Line(points={{483,-86},{500,-86},{500,-46}},
+                       color={0,0,127}));
     connect(frequency.y,division. u2)
       annotation (Line(points={{491,106},{470,106}},
                                                    color={0,0,127}));
     connect(division.y,TidalVolume. u1)
       annotation (Line(points={{447,112},{402,112}},
                                                    color={0,0,127}));
-    connect(pCO2Arteries.partialPressure,add. u2) annotation (Line(points={{-64,
-            -144},{374,-144},{374,-150}}, color={0,0,127}));
+    connect(pCO2Arteries.partialPressure,add. u2) annotation (Line(points={{-64,-144},
+            {374,-144},{374,-150}},       color={0,0,127}));
     connect(pO2Arteries.partialPressure,scitani. u2) annotation (Line(points={{-66,
             -190},{346,-190}},                                      color={0,0,
             127}));
     connect(MinuteVolume.solutionFlow,division. u1) annotation (Line(points={{-4,689},
             {108,689},{108,690},{510,690},{510,118},{470,118}},       color={0,
             0,127}));
-    connect(DeadSpace.solutionFlow,product6. y) annotation (Line(points={{-194,
-            689},{-194,724},{253,724},{253,184}}, color={0,0,127}));
-    connect(RespRate.y,product6. u1) annotation (Line(points={{289,152},{282,
-            152},{282,178},{276,178}}, color={0,0,127}));
-    connect(min1.u1,volume1. y) annotation (Line(points={{368,144},{397,144},{
-            397,146}}, color={0,0,127}));
-    connect(min1.u2,TidalVolume. y) annotation (Line(points={{368,132},{374,132},
-            {374,122},{379,122},{379,118}}, color={0,0,127}));
-    connect(RespRate.u2,min1. y) annotation (Line(points={{312,146},{332,146},{
-            332,138},{345,138}}, color={0,0,127}));
-    connect(RespRate.u1,division. u1) annotation (Line(points={{312,158},{510,
-            158},{510,118},{470,118}}, color={0,0,127}));
-    connect(min1.y,product11. u1) annotation (Line(points={{345,138},{340,138},
-            {340,186},{334,186},{334,192}},
-                                       color={0,0,127}));
+    connect(DeadSpace.solutionFlow,product6. y) annotation (Line(points={{-194,689},
+            {-194,724},{253,724},{253,184}},      color={0,0,127}));
+    connect(RespRate.y,product6. u1) annotation (Line(points={{289,152},{282,152},
+            {282,178},{276,178}},      color={0,0,127}));
+    connect(min1.u1,volume1. y) annotation (Line(points={{368,144},{397,144},{397,
+            146}},     color={0,0,127}));
+    connect(min1.u2,TidalVolume. y) annotation (Line(points={{368,132},{374,132},{
+            374,122},{379,122},{379,118}},  color={0,0,127}));
+    connect(RespRate.u2,min1. y) annotation (Line(points={{312,146},{332,146},{332,
+            138},{345,138}},     color={0,0,127}));
+    connect(RespRate.u1,division. u1) annotation (Line(points={{312,158},{510,158},
+            {510,118},{470,118}},      color={0,0,127}));
+    connect(min1.y,product11. u1) annotation (Line(points={{345,138},{340,138},{340,
+            186},{334,186},{334,192}}, color={0,0,127}));
     connect(DeadVolumeFraction.y,product11. u2)
       annotation (Line(points={{369,204},{334,204}}, color={0,0,127}));
-    connect(product11.y,product6. u2) annotation (Line(points={{311,198},{300,
-            198},{300,188},{276,188},{276,190}},
-                                            color={0,0,127}));
+    connect(product11.y,product6. u2) annotation (Line(points={{311,198},{300,198},
+            {300,188},{276,188},{276,190}}, color={0,0,127}));
     connect(volumeFlowRate.y,min2. u2)
       annotation (Line(points={{467,-8},{494,-8},{494,30}}, color={0,0,127}));
     connect(max1.y,min2. u1)
       annotation (Line(points={{506,-23},{506,30}}, color={0,0,127}));
-    connect(min2.y,division. u1) annotation (Line(points={{500,53},{500,80},{
-            510,80},{510,118},{470,118}}, color={0,0,127}));
+    connect(min2.y,division. u1) annotation (Line(points={{500,53},{500,80},{510,80},
+            {510,118},{470,118}},         color={0,0,127}));
     annotation (Diagram(graphics={
           Rectangle(
             extent={{182,698},{548,-372}},
@@ -1115,7 +1113,7 @@ package DP_ferkl_ECMO
 
   package Experiments
     model EcmoSim_RespReg_EcmoFlow "Experimentally increased the ecmo flow"
-      extends DP_ferkl_ECMO.ECMOSim_RespRegulation;
+      extends DP_ferkl_ECMO.ECMOSim_RespRegulation(RPM=1000);
     end EcmoSim_RespReg_EcmoFlow;
     annotation ();
   end Experiments;
